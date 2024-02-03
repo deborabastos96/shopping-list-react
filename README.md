@@ -14,5 +14,6 @@ Welcome to the Shopping List application! This is a simple web application built
 
 - React
 - React Router
-- CSS
+- Tailwindcss
+- React Icons
 - LocalStorage
