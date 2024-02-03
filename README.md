@@ -1,8 +1,18 @@
-# React + Vite
+# Shopping List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the Shopping List application! This is a simple web application built with React that allows users to create and manage their shopping lists.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create Lists: Users can create multiple shopping lists, each with its own name and items.
+- Add Items: For each list, users can add multiple items they need to buy.
+- Mark Items as Done: Users can mark items as done when they have purchased them.
+- Delete Items: Users can remove items from the list that they no longer need.
+- Clear Lists: Users have the option to clear the entire list if they want to start over.
+
+## Technologies Used
+
+- React
+- React Router
+- CSS
+- LocalStorage
