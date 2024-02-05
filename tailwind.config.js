@@ -7,8 +7,8 @@ export default {
     },
 
     extend: {
-      height: {
-        screen: "100dvh",
+      gridTemplateRows: {
+        gridList: "auto auto 1fr auto",
       },
     },
   },
