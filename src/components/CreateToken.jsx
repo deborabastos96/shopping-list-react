@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import Button from './Button';
+import { useNavigate } from 'react-router-dom';
 
 function CreateToken({ name, setName }) {
   const [token, setToken] = useState('');
+  const navigate = useNavigate();
 
   return (
-    <div className="flex justify-center gap-[8rem]">
-      <form onSubmit={() => {}}>
+    <div className="flex justify-center gap-[5.5rem]">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          navigate('/list');
+        }}
+      >
         <div className="flex flex-col items-center">
           <p className="text-sm md:text-base">👋 Hi! Are you new here?</p>
           <p className="mb-4 text-sm md:text-base">
@@ -29,7 +36,12 @@ function CreateToken({ name, setName }) {
 
       <div className="h-[12rem] border-[1px] border-solid border-purple-200"></div>
 
-      <form onSubmit={() => {}}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          navigate('/list');
+        }}
+      >
         <div className="flex flex-col items-center">
           <p className="text-sm md:text-base">📜 Welcome back!</p>
           <p className="mb-4 text-sm md:text-base">
