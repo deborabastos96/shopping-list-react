@@ -19,8 +19,11 @@ function Item() {
       <span className={item.packed ? 'line-through' : ''}>
         {item.quantity} {item.description}
       </span>
-      <button onClick={() => {}}>
-        <HiOutlineXMark className="text-[20px] text-red-800 focus:bg-fuchsia-400 focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2" />
+      <button
+        className="focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"
+        onClick={() => {}}
+      >
+        <HiOutlineXMark className="text-[20px] text-red-800" />
       </button>
     </li>
   );
