@@ -1,8 +1,28 @@
 import { useState } from 'react';
 import { HiOutlineMinus, HiOutlinePlus } from 'react-icons/hi2';
 import Button from './Button';
+import { db } from '../services/firebase';
+import { getDocs, addDoc, collection } from '@firebase/firestore';
+import { useRef } from 'react';
 
 function AddItem() {
+  /* const messageRef = useRef();
+  const ref = collection(db, 'messages');
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    let data = {
+      message: messageRef.current.value,
+    };
+
+    try {
+      addDoc(ref, data);
+    } catch (e) {
+      console.log(e);
+    }
+  } */
+
   const [quantity, setQuantity] = useState(1);
   const [item, setItem] = useState('');
   const [category, setCategory] = useState('default');
