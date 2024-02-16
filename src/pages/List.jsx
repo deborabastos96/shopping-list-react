@@ -2,9 +2,13 @@ import { useState } from 'react';
 import AddItem from '../components/AddItem';
 import ItemsList from '../components/ItemsList';
 import Stats from '../components/Stats';
+import { useShoppingList } from '../context/ShoppingListContexts';
 
 function List() {
-  const [items, setItems] = useState([]);
+  const { token, bought, categories, id, items, name, quantity } =
+    useShoppingList();
+
+  // const [items, setItems] = useState([]);
   const [sortBy, setSortBy] = useState('input');
 
   let sortedItems;

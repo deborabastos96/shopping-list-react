@@ -7,7 +7,6 @@ const ShoppingListContext = createContext();
 
 function ShoppingListProvider({ children }) {
   const [shoppingList, setShoppingList] = useState([]);
-  const token = 'hello world';
 
   useEffect(() => {
     async function getShoppingList() {
@@ -17,7 +16,7 @@ function ShoppingListProvider({ children }) {
           ...doc.data(),
           id: doc.id,
         }));
-        setShoppingList(filteredData);
+        setShoppingList(filteredData[0]);
       } catch (err) {
         console.error(err);
       }
@@ -25,6 +24,8 @@ function ShoppingListProvider({ children }) {
 
     getShoppingList();
   }, []);
+
+  const { token, bought, categories, id, items, name, quantity } = shoppingList;
 
   /* 
 async function onSubmit(e) {
@@ -42,7 +43,9 @@ async function onSubmit(e) {
 } */
 
   return (
-    <ShoppingListContext.Provider value={{}}>
+    <ShoppingListContext.Provider
+      value={{ token, bought, categories, id, items, name, quantity }}
+    >
       {children}
     </ShoppingListContext.Provider>
   );
