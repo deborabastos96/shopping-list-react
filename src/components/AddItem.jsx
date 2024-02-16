@@ -1,11 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineMinus, HiOutlinePlus } from 'react-icons/hi2';
 import Button from './Button';
-import { db } from '../services/firebase';
+import { db, shoppingListCollection } from '../services/firebase';
 import { getDocs, addDoc, collection } from '@firebase/firestore';
 import { useRef } from 'react';
 
 function AddItem() {
+  const [shoppingList, setShoppingList] = useState([]);
+  const token = 'hello world';
+
+  useEffect(() => {
+    async function getShoppingList() {
+      try {
+        const data = await getDocs(shoppingListCollection);
+        const filteredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setShoppingList(filteredData);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    getShoppingList();
+  }, []);
+
   /* const messageRef = useRef();
   const ref = collection(db, 'messages');
 
