@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { shoppingListCollection } from '../services/firebase';
-import { getDocs, addDoc, collection } from '@firebase/firestore';
+import { db, shoppingListCollection } from '../services/firebase';
+import {
+  getDocs,
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+} from '@firebase/firestore';
 
 const ShoppingListContext = createContext();
 
@@ -27,24 +33,23 @@ function ShoppingListProvider({ children }) {
 
   const { token, bought, categories, id, items, name, quantity } = shoppingList;
 
-  /* 
-async function onSubmit(e) {
-  e.preventDefault();
-
-  let data = {
-    message: messageRef.current.value,
-  };
-
-  try {
-    addDoc(ref, data);
-  } catch (e) {
-    console.log(e);
+  async function updateShoppingList(obj) {
+    const shoppingListDoc = doc(db, 'shopping_list', 'm612tYuO2zreqgwvY8es');
+    await updateDoc(shoppingListDoc, obj);
   }
-} */
 
   return (
     <ShoppingListContext.Provider
-      value={{ token, bought, categories, id, items, name, quantity }}
+      value={{
+        token,
+        bought,
+        categories,
+        id,
+        items,
+        name,
+        quantity,
+        updateShoppingList,
+      }}
     >
       {children}
     </ShoppingListContext.Provider>

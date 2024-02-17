@@ -17,4 +17,4 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const shoppingListCollection = collection(db, 'shopping_list');
 
-export { shoppingListCollection };
+export { shoppingListCollection, db };

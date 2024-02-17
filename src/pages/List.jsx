@@ -8,21 +8,21 @@ function List() {
   const { token, bought, categories, id, items, name, quantity } =
     useShoppingList();
 
-  // const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState([]);
   const [sortBy, setSortBy] = useState('input');
 
   let sortedItems;
 
   function handleAddItems(item) {
-    setItems((items) => [...items, item]);
+    setNewItem((items) => [...items, newItem]);
   }
 
   function handleDeleteItem(id) {
-    setItems((items) => items.filter((item) => item.id !== id));
+    setNewItem((items) => items.filter((item) => item.id !== id));
   }
 
   function handleToggleItem(id) {
-    setItems((items) =>
+    setNewItem((items) =>
       items.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item,
       ),
@@ -34,7 +34,7 @@ function List() {
       'Are you sure you want to delete all items?',
     );
 
-    if (confirmed) setItems([]);
+    if (confirmed) setNewItem([]);
   }
 
   if (sortBy === 'input') sortedItems = items;

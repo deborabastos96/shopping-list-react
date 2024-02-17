@@ -1,24 +1,26 @@
 import { useState } from 'react';
 import { HiOutlineXMark } from 'react-icons/hi2';
+import { useShoppingList } from '../context/ShoppingListContexts';
 
-function Item() {
-  const [item, setItem] = useState({
-    quantity: 2,
-    description: 'Toothbrush',
-    bought: false,
-    caregory: 'food',
-  });
+function Item({ quantity, description, index: i }) {
+  const { bought, updateShoppingList } = useShoppingList();
+
+  function handleCheckbox() {
+    bought[i] = !bought[i];
+
+    updateShoppingList({ bought });
+  }
 
   return (
     <li className="flex items-center gap-3">
       <input
         className="h-5 w-5 accent-purple-500 focus:bg-fuchsia-400 focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"
         type="checkbox"
-        value={item.packed}
-        onChange={() => {}}
+        value={bought[i]}
+        onChange={handleCheckbox}
       />
-      <span className={item.packed ? 'line-through' : ''}>
-        {item.quantity} {item.description}
+      <span className={bought[i] ? 'line-through' : ''}>
+        {quantity} {description}
       </span>
       <button
         className="focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"
