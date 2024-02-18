@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineMinus, HiOutlinePlus } from 'react-icons/hi2';
 import Button from './Button';
+import { useShoppingList } from '../context/ShoppingListContexts';
 
 function AddItem() {
-  const [quantity, setQuantity] = useState(1);
+  const {
+    quantities,
+    items,
+    categories,
+    bought,
+    setQuantities,
+    setItems,
+    setCategories,
+    setBought,
+    updateShoppingList,
+  } = useShoppingList();
+
   const [item, setItem] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState('default');
 
   function handleSubmit(e) {
@@ -13,11 +26,16 @@ function AddItem() {
     if (!item) return;
     if (category == 'default') return;
 
+    setQuantities(quantities.push(quantity));
+    setItems(items.push(item));
+    setCategories(categories.push(category));
+    setBought(bought.push(false));
+
+    updateShoppingList({ quantities, items, categories, bought });
+
     setItem('');
     setQuantity(1);
     setCategory('default');
-
-    console.log(item, quantity, category);
   }
 
   return (
