@@ -6,6 +6,10 @@
   .input {
     @apply rounded-full border border-fuchsia-400 px-4 py-2 text-sm text-fuchsia-800 transition-all duration-300 placeholder:text-fuchsia-800 focus:outline-none focus:ring focus:ring-fuchsia-400 md:px-6 md:py-3;
   }
+
+  .select {
+    @apply rounded-full border border-fuchsia-400 px-4 py-2 text-sm text-fuchsia-800 transition-all duration-300 placeholder:text-fuchsia-800 focus:outline-none focus:ring focus:ring-fuchsia-400 md:px-6 md:py-3;
+  }
 }
 
 ::-webkit-scrollbar {

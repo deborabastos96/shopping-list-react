@@ -1,7 +1,7 @@
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useShoppingList } from '../context/ShoppingListContexts';
 
-function Item({ quantity, description, index: i }) {
+function Item({ index: i, sortedItems }) {
   const {
     quantities,
     items,
@@ -14,41 +14,37 @@ function Item({ quantity, description, index: i }) {
     updateShoppingList,
   } = useShoppingList();
 
+  function spliceArr() {
+    quantities.splice(i, 1);
+    sortedItems.splice(i, 1);
+    bought.splice(i, 1);
+  }
+
   function handleCheckbox() {
     bought[i] = !bought[i];
 
     updateShoppingList({ bought });
   }
 
-  function spliceArr() {
-    const removedQuantities = quantities.splice(i, i + 1);
-    const removedItems = items.splice(i, i + 1);
-    const removedBought = bought.splice(i, i + 1);
-  }
-
   function handleDelete() {
     const categoryRepeated = categories.reduce((acc) => {
-      if (categories[i]) {
-        acc += 1;
-      }
+      if (categories[i]) acc += 1;
     }, 0);
 
     if (categoryRepeated == 1) {
       spliceArr();
     } else {
-      const removedCategories = categories.splice(i, i + 1);
+      categories.splice(i, i + 1);
       spliceArr();
     }
 
     setQuantities(quantities);
-    setItems(items);
+    setItems(sortedItems);
     setCategories(categories);
     setBought(bought);
 
     updateShoppingList({ quantities, items, categories, bought });
   }
-
-  // console.log(categories);
 
   return (
     <li className="flex items-center gap-3">
@@ -57,9 +53,12 @@ function Item({ quantity, description, index: i }) {
         type="checkbox"
         value={bought[i]}
         onChange={handleCheckbox}
+        checked={bought[i]}
       />
       <span className={bought[i] ? 'line-through' : ''}>
-        {quantity} {description}
+        {quantities[i]}{' '}
+        {sortedItems[i].charAt(0).toUpperCase() +
+          sortedItems[i].slice(1).toLowerCase()}
       </span>
       <button
         className="focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"

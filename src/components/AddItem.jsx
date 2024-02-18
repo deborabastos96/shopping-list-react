@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { HiOutlineMinus, HiOutlinePlus } from 'react-icons/hi2';
 import Button from './Button';
 import { useShoppingList } from '../context/ShoppingListContexts';
@@ -9,6 +9,7 @@ function AddItem() {
     items,
     categories,
     bought,
+    setIsLoading,
     setQuantities,
     setItems,
     setCategories,
@@ -26,6 +27,7 @@ function AddItem() {
     if (!item) return;
     if (category == 'default') return;
 
+    setIsLoading(true);
     setQuantities(quantities.push(quantity));
     setItems(items.push(item));
     setCategories(categories.push(category));
@@ -49,7 +51,7 @@ function AddItem() {
 
       <div className="mb-3 flex items-center justify-center gap-6">
         <select
-          className="shadow-sm focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"
+          className="select"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >

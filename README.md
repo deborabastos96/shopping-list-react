@@ -13,7 +13,9 @@ Welcome to the Shopping List application! This is a simple web application built
 ## Technologies Used
 
 - React
+- Vite
 - React Router
 - Tailwindcss
 - React Icons
 - LocalStorage
+- Firebase

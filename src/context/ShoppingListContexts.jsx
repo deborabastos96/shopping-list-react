@@ -18,17 +18,12 @@ function ShoppingListProvider({ children }) {
   const [quantities, setQuantities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  function error(err) {
+    console.error(`${err} 💣💣💣`);
+    throw err;
+  }
+
   async function getCreateUser(userTokenExist) {
-    const shoppingListSnapshot = await getDocs(shoppingListCollection);
-
-    const shoppingList = shoppingListSnapshot.docs
-      .filter((doc) => `"${doc.data().token}"` == userToken)[0]
-      ?.data();
-
-    const shoppingListId = shoppingListSnapshot.docs.filter(
-      (doc) => doc.data().token == userToken,
-    )[0]?.id;
-
     if (userTokenExist == null) {
       try {
         const newShoppingList = await addDoc(shoppingListCollection, {
@@ -42,10 +37,21 @@ function ShoppingListProvider({ children }) {
 
         userToken = localStorage.getItem('token');
         getShoppingList();
-      } catch (e) {
-        console.log(e);
+
+        return newShoppingList;
+      } catch (err) {
+        error(err);
       }
     }
+
+    const shoppingListSnapshot = await getDocs(shoppingListCollection);
+
+    const shoppingListFull = shoppingListSnapshot.docs.filter(
+      (doc) => `"${doc.data().token}"` == userToken,
+    )[0];
+
+    const shoppingList = shoppingListFull?.data();
+    const shoppingListId = shoppingListFull?.id;
 
     return { shoppingList, shoppingListId };
   }
@@ -53,10 +59,11 @@ function ShoppingListProvider({ children }) {
   async function getShoppingList() {
     try {
       if (userToken == null) return await getCreateUser(userToken);
-      const shoppingListPromise = await getCreateUser(userToken);
-      const { shoppingList, shoppingListId } = shoppingListPromise;
 
       setIsLoading(true);
+
+      const shoppingListPromise = await getCreateUser(userToken);
+      const { shoppingList, shoppingListId } = shoppingListPromise;
 
       setId(shoppingListId);
       setBought(shoppingList.bought);
@@ -67,7 +74,7 @@ function ShoppingListProvider({ children }) {
 
       setIsLoading(false);
     } catch (err) {
-      console.error(err);
+      error(err);
     }
   }
 
@@ -98,7 +105,9 @@ function ShoppingListProvider({ children }) {
         setName,
         setQuantities,
         updateShoppingList,
+        setIsLoading,
         isLoading,
+        getShoppingList,
       }}
     >
       {children}
