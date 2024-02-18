@@ -2,22 +2,15 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import getToken from '../services/tokens';
 import { db, shoppingListCollection } from '../services/firebase';
-import {
-  getDocs,
-  addDoc,
-  collection,
-  doc,
-  updateDoc,
-  query,
-  where,
-} from '@firebase/firestore';
+import { getDocs, addDoc, doc, updateDoc } from '@firebase/firestore';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 
 const ShoppingListContext = createContext();
 
 function ShoppingListProvider({ children }) {
   let userToken = localStorage.getItem('token');
-  const [token, setToken] = useLocalStorageState('', 'token');
+  const [token, setToken] = useLocalStorageState(getToken(), 'token');
+  const [id, setId] = useState([]);
   const [bought, setBought] = useState([]);
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
@@ -27,18 +20,20 @@ function ShoppingListProvider({ children }) {
 
   async function getCreateUser(userTokenExist) {
     const shoppingListSnapshot = await getDocs(shoppingListCollection);
-    const shoppingList = shoppingListSnapshot.docs.filter(
-      (doc) => `"${doc.data().token}"` == userTokenExist,
-    );
-    // const shoppingListId = shoppingList[0].id;
-    // const userShoppingList = shoppingList[0].data();
-    console.log('HELLO');
-    if (token == '') {
-      setToken(getToken(), 'token');
 
+    const shoppingList = shoppingListSnapshot.docs
+      .filter((doc) => `"${doc.data().token}"` == userToken)[0]
+      ?.data();
+
+    const shoppingListId = shoppingListSnapshot.docs.filter(
+      (doc) => doc.data().token == userToken,
+    )[0]?.id;
+
+    if (userTokenExist == null) {
       try {
         const newShoppingList = await addDoc(shoppingListCollection, {
-          bought: categories,
+          bought,
+          categories,
           items,
           name,
           quantities,
@@ -46,37 +41,31 @@ function ShoppingListProvider({ children }) {
         });
 
         userToken = localStorage.getItem('token');
-        console.log(token);
-
-        // updateShoppingList(newShoppingList.id, {token: userToken})
+        getShoppingList();
       } catch (e) {
         console.log(e);
       }
     }
 
-    // return { userShoppingList, shoppingListId };
+    return { shoppingList, shoppingListId };
   }
 
   async function getShoppingList() {
     try {
-      const shoppingList = await getCreateUser(userToken);
-      // const { userShoppingList, shoppingListId } = shoppingList;
+      if (userToken == null) return await getCreateUser(userToken);
+      const shoppingListPromise = await getCreateUser(userToken);
+      const { shoppingList, shoppingListId } = shoppingListPromise;
 
-      // setIsLoading(true);
+      setIsLoading(true);
 
-      // // const data = await getDocs(shoppingListCollection);
-      // // const filteredData = data.docs.map((doc) => ({
-      // //   ...doc.data(),
-      // //   id: doc.id,
-      // // }));
-      // setToken(userShoppingList.token);
-      // setBought(userShoppingList.bought);
-      // setCategories(userShoppingList.categories);
-      // setItems(userShoppingList.items);
-      // setName(userShoppingList.name);
-      // setQuantities(userShoppingList.quantities);
+      setId(shoppingListId);
+      setBought(shoppingList.bought);
+      setCategories(shoppingList.categories);
+      setItems(shoppingList.items);
+      setName(shoppingList.name);
+      setQuantities(shoppingList.quantities);
 
-      // setIsLoading(false);
+      setIsLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -86,7 +75,7 @@ function ShoppingListProvider({ children }) {
     getShoppingList();
   }, []);
 
-  async function updateShoppingList(id, obj) {
+  async function updateShoppingList(obj) {
     const shoppingListDoc = doc(db, 'shopping_list', id);
     await updateDoc(shoppingListDoc, obj);
 

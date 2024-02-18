@@ -4,12 +4,13 @@ import { getFirestore, collection } from '@firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBha2mK32Y1uNXNh4x2HLIhgA-NtVbP4Ss',
-  authDomain: 'shopping-list-debora.firebaseapp.com',
-  projectId: 'shopping-list-debora',
-  storageBucket: 'shopping-list-debora.appspot.com',
-  messagingSenderId: '667987620804',
-  appId: '1:667987620804:web:abca725f14b20f204baa91',
+  apiKey: 'AIzaSyBk37AIG8Uyw1bDU0AdE_cnBMr-d-XPUbQ',
+  authDomain: 'shopping-list-v2-a65a2.firebaseapp.com',
+  databaseURL: 'https://shopping-list-v2-a65a2-default-rtdb.firebaseio.com',
+  projectId: 'shopping-list-v2-a65a2',
+  storageBucket: 'shopping-list-v2-a65a2.appspot.com',
+  messagingSenderId: '955042949168',
+  appId: '1:955042949168:web:5a784f226c4f48b1bd25f5',
 };
 
 // Initialize Firebase
