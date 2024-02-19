@@ -59,7 +59,7 @@ function ShoppingListProvider({ children }) {
       userToken = '';
       console.log('Did not found token');
       setIsLoading(false);
-      return;
+      return navigate(-1);
     }
 
     const shoppingList = shoppingListFull?.data();
@@ -72,14 +72,12 @@ function ShoppingListProvider({ children }) {
     setToken(tokenInput);
     userToken = `"${tokenInput}"`;
     await getShoppingList(userToken);
-
-    navigate('/list');
   }
 
-  async function createToken() {
-    setToken(getToken());
-    await getCreateUser(userToken);
-  }
+  // async function createToken() {
+  //   setToken(getToken());
+  //   await getCreateUser(userToken);
+  // }
 
   async function getShoppingList() {
     try {
@@ -99,6 +97,8 @@ function ShoppingListProvider({ children }) {
       setItems(shoppingList.items);
       setName(shoppingList.name);
       setQuantities(shoppingList.quantities);
+
+      navigate('/list');
 
       setIsLoading(false);
     } catch (err) {
