@@ -1,7 +1,9 @@
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useShoppingList } from '../context/ShoppingListContexts';
 import Button from './Button';
+import Modal from './Modal';
 import toast from 'react-hot-toast';
+import ConfirmDelete from './ConfirmDelete';
 
 function Item({ index: i }) {
   const {
@@ -54,6 +56,7 @@ function Item({ index: i }) {
     const confirmed = window.confirm(
       'Are you sure you want to delete this item?',
     );
+
     if (confirmed) {
       spliceArr();
 
@@ -82,9 +85,15 @@ function Item({ index: i }) {
         {items[i].charAt(0).toUpperCase() + items[i].slice(1).toLowerCase()}
       </span>
 
-      <Button type="delete" onClick={handleDelete}>
-        <HiOutlineXMark className="text-[20px] text-red-800" />
-      </Button>
+      <Modal.Open opens="delete">
+        <Button type="delete">
+          <HiOutlineXMark className="text-[20px] text-red-800" />
+        </Button>
+      </Modal.Open>
+
+      <Modal.Window name="delete">
+        <ConfirmDelete resourceName="items" onConfirm={() => handleDelete()} />
+      </Modal.Window>
     </li>
   );
 }

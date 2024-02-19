@@ -1,6 +1,6 @@
 import Button from './Button';
 
-function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmDelete({ resourceName, onConfirm, onCloseModal }) {
   return (
     <div>
       <h3>Delete {resourceName}</h3>
