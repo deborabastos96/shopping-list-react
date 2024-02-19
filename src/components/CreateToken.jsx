@@ -1,12 +1,8 @@
 import Button from './Button';
-import { useNavigate } from 'react-router-dom';
 import { useShoppingList } from '../context/ShoppingListContexts';
-import { useState } from 'react';
 
 function CreateToken({ name, setName }) {
   const { tokenInput, setTokenInput, accessList } = useShoppingList();
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex justify-center gap-[5.5rem]">

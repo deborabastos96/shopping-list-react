@@ -1,6 +1,7 @@
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useShoppingList } from '../context/ShoppingListContexts';
 import Button from './Button';
+import toast from 'react-hot-toast';
 
 function Item({ index: i }) {
   const {
@@ -62,6 +63,8 @@ function Item({ index: i }) {
       setBought(bought);
 
       updateShoppingList({ quantities, items, categories, bought });
+
+      toast.success('Item successfully deleted');
     }
   }
 
