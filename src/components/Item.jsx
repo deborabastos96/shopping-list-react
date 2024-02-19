@@ -1,7 +1,8 @@
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useShoppingList } from '../context/ShoppingListContexts';
+import Button from './Button';
 
-function Item({ index: i, sortedItems }) {
+function Item({ index: i }) {
   const {
     quantities,
     items,
@@ -12,38 +13,56 @@ function Item({ index: i, sortedItems }) {
     setCategories,
     setBought,
     updateShoppingList,
+    setIsLoading,
   } = useShoppingList();
 
   function spliceArr() {
-    quantities.splice(i, 1);
-    sortedItems.splice(i, 1);
-    bought.splice(i, 1);
+    const removedQuantity = quantities.splice(i, 1);
+    const removedItem = items.splice(i, 1);
+    const boughtItem = bought.splice(i, 1);
+    const removedCategory = categories.splice(i, 1);
+
+    return { removedQuantity, removedItem, removedCategory, boughtItem };
   }
 
   function handleCheckbox() {
-    bought[i] = !bought[i];
+    setIsLoading(true);
 
-    updateShoppingList({ bought });
+    if (bought[i] == false) {
+      const { removedQuantity, removedItem, removedCategory } = spliceArr();
+
+      updateShoppingList({
+        bought: [...bought, true],
+        quantities: [...quantities, ...removedQuantity],
+        items: [...items, ...removedItem],
+        categories: [...categories, ...removedCategory],
+      });
+    } else {
+      const { removedQuantity, removedItem, removedCategory } = spliceArr();
+
+      updateShoppingList({
+        bought: [false, ...bought],
+        quantities: [...removedQuantity, ...quantities],
+        items: [...removedItem, ...items],
+        categories: [...removedCategory, ...categories],
+      });
+    }
   }
 
   function handleDelete() {
-    const categoryRepeated = categories.reduce((acc) => {
-      if (categories[i]) acc += 1;
-    }, 0);
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this item?',
+    );
+    if (confirmed) {
+      spliceArr();
 
-    if (categoryRepeated == 1) {
-      spliceArr();
-    } else {
-      categories.splice(i, i + 1);
-      spliceArr();
+      setQuantities(quantities);
+      setItems(items);
+      setCategories(categories);
+      setBought(bought);
+
+      updateShoppingList({ quantities, items, categories, bought });
     }
-
-    setQuantities(quantities);
-    setItems(sortedItems);
-    setCategories(categories);
-    setBought(bought);
-
-    updateShoppingList({ quantities, items, categories, bought });
   }
 
   return (
@@ -57,15 +76,12 @@ function Item({ index: i, sortedItems }) {
       />
       <span className={bought[i] ? 'line-through' : ''}>
         {quantities[i]}{' '}
-        {sortedItems[i].charAt(0).toUpperCase() +
-          sortedItems[i].slice(1).toLowerCase()}
+        {items[i].charAt(0).toUpperCase() + items[i].slice(1).toLowerCase()}
       </span>
-      <button
-        className="focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2"
-        onClick={handleDelete}
-      >
+
+      <Button type="delete" onClick={handleDelete}>
         <HiOutlineXMark className="text-[20px] text-red-800" />
-      </button>
+      </Button>
     </li>
   );
 }

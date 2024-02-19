@@ -4,12 +4,13 @@ import getToken from '../services/tokens';
 import { db, shoppingListCollection } from '../services/firebase';
 import { getDocs, addDoc, doc, updateDoc } from '@firebase/firestore';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import { useNavigate } from 'react-router-dom';
 
 const ShoppingListContext = createContext();
 
 function ShoppingListProvider({ children }) {
   let userToken = localStorage.getItem('token');
-  const [token, setToken] = useLocalStorageState(getToken(), 'token');
+  const [token, setToken] = useLocalStorageState('', 'token');
   const [id, setId] = useState([]);
   const [bought, setBought] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -17,6 +18,9 @@ function ShoppingListProvider({ children }) {
   const [name, setName] = useState('');
   const [quantities, setQuantities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [tokenInput, setTokenInput] = useState('');
+
+  const navigate = useNavigate();
 
   function error(err) {
     console.error(`${err} 💣💣💣`);
@@ -50,19 +54,43 @@ function ShoppingListProvider({ children }) {
       (doc) => `"${doc.data().token}"` == userToken,
     )[0];
 
+    if (shoppingListFull == undefined) {
+      setToken('');
+      userToken = '';
+      console.log('Did not found token');
+      setIsLoading(false);
+      return;
+    }
+
     const shoppingList = shoppingListFull?.data();
     const shoppingListId = shoppingListFull?.id;
 
     return { shoppingList, shoppingListId };
   }
 
+  async function accessList() {
+    setToken(tokenInput);
+    userToken = `"${tokenInput}"`;
+    await getShoppingList(userToken);
+
+    navigate('/list');
+  }
+
+  async function createToken() {
+    setToken(getToken());
+    await getCreateUser(userToken);
+  }
+
   async function getShoppingList() {
     try {
-      if (userToken == null) return await getCreateUser(userToken);
+      if (userToken == null || userToken == `""`) return navigate('/');
 
       setIsLoading(true);
 
       const shoppingListPromise = await getCreateUser(userToken);
+
+      if (shoppingListPromise == undefined) return navigate('/');
+
       const { shoppingList, shoppingListId } = shoppingListPromise;
 
       setId(shoppingListId);
@@ -93,6 +121,7 @@ function ShoppingListProvider({ children }) {
     <ShoppingListContext.Provider
       value={{
         token,
+        userToken,
         bought,
         categories,
         items,
@@ -108,6 +137,9 @@ function ShoppingListProvider({ children }) {
         setIsLoading,
         isLoading,
         getShoppingList,
+        tokenInput,
+        setTokenInput,
+        accessList,
       }}
     >
       {children}

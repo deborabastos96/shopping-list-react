@@ -7,8 +7,8 @@ import { ShoppingListProvider } from './context/ShoppingListContexts';
 
 function App() {
   return (
-    <ShoppingListProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ShoppingListProvider>
         <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<Home />} />
@@ -16,8 +16,8 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </ShoppingListProvider>
+      </ShoppingListProvider>
+    </BrowserRouter>
   );
 }
 

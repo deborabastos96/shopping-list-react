@@ -9,7 +9,6 @@ function ItemsList() {
 
   const [sortBy, setSortBy] = useState('input');
 
-  let sortedItems;
   let categoriesSet = [];
 
   if (categories.length > 0) {
@@ -31,19 +30,11 @@ function ItemsList() {
     }
   }
 
-  if (sortBy === 'input') sortedItems = items;
-
-  // if (sortBy === 'description') sortedItems = items.slice().sort((a, b) => a.description.localeCompare(b.description));;
-
   return (
     <div className="flex flex-col justify-between">
       <div className="grid grid-cols-1 gap-2 px-[20px] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {categoriesSet.map((category) => (
-          <Category
-            category={category}
-            sortedItems={sortedItems}
-            key={category}
-          />
+          <Category category={category} key={category} />
         ))}
       </div>
 

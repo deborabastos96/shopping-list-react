@@ -7,6 +7,8 @@ function Button({ children, to, type, onClick }) {
   const styles = {
     round:
       base + 'py-1 md:px-[12px] md:py-[12px] px-[12px] py-[12px] text-[17px]',
+    delete:
+      'focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2',
   };
 
   if (to)
@@ -16,18 +18,18 @@ function Button({ children, to, type, onClick }) {
       </Link>
     );
 
-  if (onClick || type)
+  if (type)
     return (
-      <button
-        onClick={onClick}
-        // disabled={disabled}
-        className={type ? styles[type] : base}
-      >
+      <button onClick={onClick} className={styles[type]}>
         {children}
       </button>
     );
 
-  return <button className={base}>{children}</button>;
+  return (
+    <button onClick={onClick} className={base}>
+      {children}
+    </button>
+  );
 }
 
 export default Button;

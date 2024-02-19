@@ -1,7 +1,7 @@
 import { useShoppingList } from '../context/ShoppingListContexts';
 import Item from './Item';
 
-function Category({ category, sortedItems }) {
+function Category({ category }) {
   const { categories } = useShoppingList();
 
   let categoriesBoolArr = [];
@@ -18,8 +18,7 @@ function Category({ category, sortedItems }) {
       </h2>
       <ul className="flex flex-col gap-4">
         {categoriesBoolArr.map((item, i) => {
-          if (item == true)
-            return <Item key={i} sortedItems={sortedItems} index={i} />;
+          if (item == true) return <Item key={i} index={i} />;
         })}
       </ul>
     </div>
