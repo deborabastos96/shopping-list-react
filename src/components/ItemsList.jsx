@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useShoppingList } from '../context/ShoppingListContexts';
 import Category from './Category';
 import Button from './Button';
+import toast from 'react-hot-toast';
 
 function ItemsList() {
   const { categories, items, updateShoppingList, setIsLoading, bought } =
@@ -27,6 +28,8 @@ function ItemsList() {
         items: [],
         quantities: [],
       });
+
+      toast.success('All items successfully deleted');
     }
   }
 
