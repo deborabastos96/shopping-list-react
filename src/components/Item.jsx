@@ -17,7 +17,10 @@ function Item({ index: i }) {
     setBought,
     updateShoppingList,
     setIsLoading,
+    setOpenName,
   } = useShoppingList();
+
+  const close = () => setOpenName('');
 
   function spliceArr() {
     const removedQuantity = quantities.splice(i, 1);
@@ -53,22 +56,18 @@ function Item({ index: i }) {
   }
 
   function handleDelete() {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this item?',
-    );
+    setIsLoading(true);
+    spliceArr();
 
-    if (confirmed) {
-      spliceArr();
+    setQuantities(quantities);
+    setItems(items);
+    setCategories(categories);
+    setBought(bought);
 
-      setQuantities(quantities);
-      setItems(items);
-      setCategories(categories);
-      setBought(bought);
+    updateShoppingList({ quantities, items, categories, bought });
 
-      updateShoppingList({ quantities, items, categories, bought });
-
-      toast.success('Item successfully deleted');
-    }
+    close();
+    toast.success('Item successfully deleted');
   }
 
   return (
@@ -85,15 +84,20 @@ function Item({ index: i }) {
         {items[i].charAt(0).toUpperCase() + items[i].slice(1).toLowerCase()}
       </span>
 
-      <Modal.Open opens="delete">
-        <Button type="delete">
-          <HiOutlineXMark className="text-[20px] text-red-800" />
-        </Button>
-      </Modal.Open>
+      <Modal>
+        <Modal.Open opens="delete">
+          <Button type="delete">
+            <HiOutlineXMark />
+          </Button>
+        </Modal.Open>
 
-      <Modal.Window name="delete">
-        <ConfirmDelete resourceName="items" onConfirm={() => handleDelete()} />
-      </Modal.Window>
+        <Modal.Window name="delete">
+          <ConfirmDelete
+            resourceName="this item"
+            onConfirm={() => handleDelete()}
+          />
+        </Modal.Window>
+      </Modal>
     </li>
   );
 }

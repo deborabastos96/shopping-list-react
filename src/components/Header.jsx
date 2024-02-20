@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useShoppingList } from '../context/ShoppingListContexts';
 
 function Header() {
-  const [token, setToken] = useState(true);
+  const { userToken, name } = useShoppingList();
 
   return (
     <header className="flex flex-col items-center justify-center text-purple-50">
-      {!token ? (
+      {userToken == null || userToken == `""` ? (
         <span className="tracking-widest">Welcome to your</span>
       ) : (
         <span className="tracking-widest">
-          Welcome back, Débora! Here's your
+          Welcome back, {name}! Here's your
         </span>
       )}
 

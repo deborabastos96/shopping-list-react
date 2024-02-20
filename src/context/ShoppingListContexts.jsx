@@ -19,6 +19,7 @@ function ShoppingListProvider({ children }) {
   const [quantities, setQuantities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [tokenInput, setTokenInput] = useState('');
+  const [openName, setOpenName] = useState('');
 
   const navigate = useNavigate();
 
@@ -140,6 +141,8 @@ function ShoppingListProvider({ children }) {
         tokenInput,
         setTokenInput,
         accessList,
+        openName,
+        setOpenName,
       }}
     >
       {children}

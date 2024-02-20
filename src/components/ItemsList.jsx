@@ -3,34 +3,23 @@ import { useShoppingList } from '../context/ShoppingListContexts';
 import Category from './Category';
 import Button from './Button';
 import toast from 'react-hot-toast';
+import Modal from './Modal';
+import ConfirmDelete from './ConfirmDelete';
 
 function ItemsList() {
-  const { categories, items, updateShoppingList, setIsLoading, bought } =
-    useShoppingList();
-
-  const [sortBy, setSortBy] = useState('input');
+  const {
+    categories,
+    items,
+    updateShoppingList,
+    setIsLoading,
+    bought,
+    setOpenName,
+  } = useShoppingList();
 
   let categoriesSet = [];
 
   if (categories.length > 0) {
     categoriesSet = [...new Set(categories)];
-  }
-
-  function handleClearList() {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete all items?',
-    );
-    if (confirmed) {
-      setIsLoading(true);
-      updateShoppingList({
-        bought: [],
-        categories: [],
-        items: [],
-        quantities: [],
-      });
-
-      toast.success('All items successfully deleted');
-    }
   }
 
   return (
@@ -39,20 +28,6 @@ function ItemsList() {
         {categoriesSet.map((category) => (
           <Category category={category} key={category} />
         ))}
-      </div>
-
-      <div className="flex items-center justify-center gap-5">
-        <select
-          className="select"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="bought">Sort by bought status</option>
-          <option value="input">Sort by input order</option>
-          <option value="description">Sort by description</option>
-        </select>
-
-        <Button onClick={handleClearList}>Clear list</Button>
       </div>
     </div>
   );
