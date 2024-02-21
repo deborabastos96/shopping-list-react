@@ -28,27 +28,37 @@ function ShoppingListProvider({ children }) {
     throw err;
   }
 
-  async function getCreateUser(userTokenExist) {
-    if (userTokenExist == null) {
-      try {
-        const newShoppingList = await addDoc(shoppingListCollection, {
-          bought,
-          categories,
-          items,
-          name,
-          quantities,
-          token,
-        });
+  async function accessList(e) {
+    e.preventDefault();
+    setToken(tokenInput);
+    userToken = `"${tokenInput}"`;
+    await getShoppingList();
+  }
 
-        userToken = localStorage.getItem('token');
-        getShoppingList();
+  async function createToken(e) {
+    e.preventDefault();
 
-        return newShoppingList;
-      } catch (err) {
-        error(err);
-      }
+    const newToken = getToken();
+    setToken(newToken);
+    userToken = newToken;
+
+    try {
+      const newShoppingList = await addDoc(shoppingListCollection, {
+        bought,
+        categories,
+        items,
+        name,
+        quantities,
+        token: newToken,
+      });
+
+      return newShoppingList;
+    } catch (err) {
+      error(err);
     }
+  }
 
+  async function getUser() {
     const shoppingListSnapshot = await getDocs(shoppingListCollection);
 
     const shoppingListFull = shoppingListSnapshot.docs.filter(
@@ -69,26 +79,13 @@ function ShoppingListProvider({ children }) {
     return { shoppingList, shoppingListId };
   }
 
-  async function accessList(e) {
-    e.preventDefault();
-    setToken(tokenInput);
-    userToken = `"${tokenInput}"`;
-    await getShoppingList(userToken);
-  }
-
-  async function createToken(e) {
-    e.preventDefault();
-    setToken(getToken());
-    // await getCreateUser(token);
-  }
-
   async function getShoppingList() {
     try {
       if (userToken == null || userToken == `""`) return navigate('/');
 
       setIsLoading(true);
 
-      const shoppingListPromise = await getCreateUser(userToken);
+      const shoppingListPromise = await getUser();
 
       if (shoppingListPromise == undefined) return navigate('/');
 
