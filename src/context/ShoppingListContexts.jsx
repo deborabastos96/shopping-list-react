@@ -69,16 +69,18 @@ function ShoppingListProvider({ children }) {
     return { shoppingList, shoppingListId };
   }
 
-  async function accessList() {
+  async function accessList(e) {
+    e.preventDefault();
     setToken(tokenInput);
     userToken = `"${tokenInput}"`;
     await getShoppingList(userToken);
   }
 
-  // async function createToken() {
-  //   setToken(getToken());
-  //   await getCreateUser(userToken);
-  // }
+  async function createToken(e) {
+    e.preventDefault();
+    setToken(getToken());
+    // await getCreateUser(token);
+  }
 
   async function getShoppingList() {
     try {
@@ -143,6 +145,7 @@ function ShoppingListProvider({ children }) {
         accessList,
         openName,
         setOpenName,
+        createToken,
       }}
     >
       {children}

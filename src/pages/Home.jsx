@@ -1,10 +1,9 @@
 import CreateToken from '../components/CreateToken';
 import Button from '../components/Button';
-import { useState } from 'react';
 import { useShoppingList } from '../context/ShoppingListContexts';
 
 function Home() {
-  const { userToken, name, setName } = useShoppingList();
+  const { userToken, name } = useShoppingList();
 
   return (
     <div className="flex flex-col items-center justify-center gap-6">
@@ -18,7 +17,7 @@ function Home() {
 
       <div>
         {userToken == null || userToken == `""` ? (
-          <CreateToken name={name} setName={setName} />
+          <CreateToken />
         ) : (
           <Button to="/list">Access your list, {name}</Button>
         )}
