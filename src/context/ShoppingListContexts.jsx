@@ -52,6 +52,8 @@ function ShoppingListProvider({ children }) {
         token: newToken,
       });
 
+      // await getShoppingList()
+
       return newShoppingList;
     } catch (err) {
       error(err);
