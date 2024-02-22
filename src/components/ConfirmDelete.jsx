@@ -13,7 +13,9 @@ function ConfirmDelete({ resourceName, onConfirm, onCloseModal }) {
 
       <div className="flex justify-end gap-[1.2rem]">
         <Button onClick={onCloseModal}>Cancel</Button>
-        <Button onClick={onConfirm}>Delete</Button>
+        <Button type="confirm" onClick={onConfirm}>
+          Delete
+        </Button>
       </div>
     </div>
   );

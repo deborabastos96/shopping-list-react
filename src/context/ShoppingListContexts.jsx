@@ -26,6 +26,7 @@ function ShoppingListProvider({ children }) {
 
   function error(err) {
     console.error(`${err} 💣💣💣`);
+    toast.error(err);
     throw err;
   }
 
@@ -53,6 +54,9 @@ function ShoppingListProvider({ children }) {
         token: newToken,
       });
 
+      navigate('/list');
+      location.reload();
+
       return newShoppingList;
     } catch (err) {
       error(err);
@@ -71,10 +75,13 @@ function ShoppingListProvider({ children }) {
       userToken = '';
       setIsLoading(false);
       navigate(-1);
-      toast.error(
+      error(
         'Unable to locate a list containing that token. Please try again with a different one!',
       );
-      throw new Error('List containing that token does not exist in database.');
+      // toast.error(
+      //   'Unable to locate a list containing that token. Please try again with a different one!',
+      // );
+      // throw new Error('List containing that token does not exist in database.');
     }
 
     const shoppingList = shoppingListFull?.data();

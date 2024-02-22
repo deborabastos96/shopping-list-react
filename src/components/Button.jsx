@@ -13,6 +13,7 @@ function Button({ children, to, type, onClick }) {
       'text-[30px] text-purple-500 focus:outline-none focus:ring focus:ring-fuchsia-400 focus:ring-offset-2 absolute translate-x-[0.8rem] top-[1.2rem] right-[1.9rem]',
     clear:
       'inline-block text-sm rounded-full border-2 border-purple-100 font-semibold uppercase tracking-wide text-purple-50 transition-colors duration-300 hover:bg-purple-100 hover:text-purple-500 focus:text-purple-500 focus:bg-purple-100 focus:outline-none focus:ring focus:ring-purple-100 focus:ring-offset-2 ring-offset-purple-500 disabled:cursor-not-allowed px-4 py-3 md:px-6',
+    confirm: base + 'bg-red-800 hover:bg-red-900 focus:bg-red-900',
   };
 
   if (to)
