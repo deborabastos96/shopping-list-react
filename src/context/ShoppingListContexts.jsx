@@ -5,6 +5,7 @@ import { db, shoppingListCollection } from '../services/firebase';
 import { getDocs, addDoc, doc, updateDoc } from '@firebase/firestore';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ShoppingListContext = createContext();
 
@@ -52,8 +53,6 @@ function ShoppingListProvider({ children }) {
         token: newToken,
       });
 
-      // await getShoppingList()
-
       return newShoppingList;
     } catch (err) {
       error(err);
@@ -70,9 +69,12 @@ function ShoppingListProvider({ children }) {
     if (shoppingListFull == undefined) {
       setToken('');
       userToken = '';
-      console.log('Did not found token');
       setIsLoading(false);
-      return navigate(-1);
+      navigate(-1);
+      toast.error(
+        'Unable to locate a list containing that token. Please try again with a different one!',
+      );
+      throw new Error('List containing that token does not exist in database.');
     }
 
     const shoppingList = shoppingListFull?.data();
