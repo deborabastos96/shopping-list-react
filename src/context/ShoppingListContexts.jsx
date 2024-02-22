@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-
-import getToken from '../services/tokens';
 import { db, shoppingListCollection } from '../services/firebase';
 import { getDocs, addDoc, doc, updateDoc } from '@firebase/firestore';
-import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import getToken from '../services/tokens';
 
 const ShoppingListContext = createContext();
 
@@ -24,17 +24,11 @@ function ShoppingListProvider({ children }) {
 
   const navigate = useNavigate();
 
-  function error(err) {
-    console.error(`${err} 💣💣💣`);
-    toast.error(err);
-    throw err;
-  }
-
-  async function accessList(e) {
+  function accessList(e) {
     e.preventDefault();
     setToken(tokenInput);
     userToken = `"${tokenInput}"`;
-    await getShoppingList();
+    getShoppingList();
   }
 
   async function createToken(e) {
@@ -44,26 +38,19 @@ function ShoppingListProvider({ children }) {
     setToken(newToken);
     userToken = newToken;
 
-    try {
-      const newShoppingList = await addDoc(shoppingListCollection, {
-        bought,
-        categories,
-        items,
-        name,
-        quantities,
-        token: newToken,
-      });
+    await addDoc(shoppingListCollection, {
+      bought,
+      categories,
+      items,
+      name,
+      quantities,
+      token: newToken,
+    });
 
-      navigate('/list');
-      location.reload();
-
-      return newShoppingList;
-    } catch (err) {
-      error(err);
-    }
+    location.reload();
   }
 
-  async function getUser() {
+  async function getCreateUser() {
     const shoppingListSnapshot = await getDocs(shoppingListCollection);
 
     const shoppingListFull = shoppingListSnapshot.docs.filter(
@@ -75,13 +62,10 @@ function ShoppingListProvider({ children }) {
       userToken = '';
       setIsLoading(false);
       navigate(-1);
-      error(
+      toast.error(
         'Unable to locate a list containing that token. Please try again with a different one!',
       );
-      // toast.error(
-      //   'Unable to locate a list containing that token. Please try again with a different one!',
-      // );
-      // throw new Error('List containing that token does not exist in database.');
+      throw 'List containing that token does not exist in database.';
     }
 
     const shoppingList = shoppingListFull?.data();
@@ -91,30 +75,26 @@ function ShoppingListProvider({ children }) {
   }
 
   async function getShoppingList() {
-    try {
-      if (userToken == null || userToken == `""`) return navigate('/');
+    if (userToken == null || userToken == `""`) return navigate('/');
 
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const shoppingListPromise = await getUser();
+    const shoppingListPromise = await getCreateUser();
 
-      if (shoppingListPromise == undefined) return navigate('/');
+    if (shoppingListPromise == undefined) return navigate('/');
 
-      const { shoppingList, shoppingListId } = shoppingListPromise;
+    const { shoppingList, shoppingListId } = shoppingListPromise;
 
-      setId(shoppingListId);
-      setBought(shoppingList.bought);
-      setCategories(shoppingList.categories);
-      setItems(shoppingList.items);
-      setName(shoppingList.name);
-      setQuantities(shoppingList.quantities);
+    setId(shoppingListId);
+    setBought(shoppingList.bought);
+    setCategories(shoppingList.categories);
+    setItems(shoppingList.items);
+    setName(shoppingList.name);
+    setQuantities(shoppingList.quantities);
 
-      navigate('/list');
+    navigate('/list');
 
-      setIsLoading(false);
-    } catch (err) {
-      error(err);
-    }
+    setIsLoading(false);
   }
 
   useEffect(() => {
