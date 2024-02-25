@@ -14,7 +14,7 @@ function CreateToken() {
         </p>
         <input
           type="text"
-          placeholder="Your full name"
+          placeholder="Your first name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="input mb-6 w-72"

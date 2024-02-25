@@ -4,8 +4,9 @@ import Button from './Button';
 import ConfirmDelete from './ConfirmDelete';
 import Modal from './Modal';
 
-function Stats() {
-  const { setOpenName, setIsLoading, updateShoppingList } = useShoppingList();
+function Info() {
+  const { setOpenName, setIsLoading, updateShoppingList, token } =
+    useShoppingList();
 
   const close = () => setOpenName('');
 
@@ -23,7 +24,14 @@ function Stats() {
   }
 
   return (
-    <footer className="flex items-center justify-center gap-5 rounded-b-md bg-purple-500 p-[20px] text-purple-50">
+    <footer className="flex flex-col-reverse items-center justify-between gap-5 rounded-b-md bg-purple-500 p-[20px] text-center text-purple-50 md:flex-row md:text-left">
+      <div className="flex flex-col">
+        <span>To access your list, save your token:</span>
+        <span>
+          <strong>{token}</strong>
+        </span>
+      </div>
+
       <Modal>
         <Modal.Open opens="delete all">
           <Button type="clear">Clear list</Button>
@@ -40,4 +48,4 @@ function Stats() {
   );
 }
 
-export default Stats;
+export default Info;
