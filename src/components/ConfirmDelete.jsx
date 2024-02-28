@@ -2,7 +2,7 @@ import Button from './Button';
 
 function ConfirmDelete({ resourceName, onConfirm, onCloseModal }) {
   return (
-    <div className="flex w-[40rem] flex-col gap-[1.2rem]">
+    <div className="flex flex-col gap-[1.2rem] md:w-[40rem]">
       <h3 className="text-lg font-bold uppercase tracking-wider text-gray-500">
         Delete {resourceName}
       </h3>
