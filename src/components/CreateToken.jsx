@@ -6,7 +6,7 @@ function CreateToken() {
     useShoppingList();
 
   return (
-    <div className="flex justify-center gap-[5.5rem]">
+    <div className="flex flex-col items-center justify-center gap-4 text-center md:flex-row md:items-start md:gap-[3.5rem] lg:gap-[8rem]">
       <form className="flex flex-col items-center" onSubmit={createToken}>
         <p className="text-sm md:text-base">👋 Hi! Are you new here?</p>
         <p className="mb-4 text-sm md:text-base">
@@ -22,7 +22,7 @@ function CreateToken() {
         {name !== '' && <Button>Create new list</Button>}
       </form>
 
-      <div className="h-[12rem] border-[1px] border-solid border-purple-200"></div>
+      <div className="h-[30px] w-[8rem] border-t-2 border-solid border-purple-200 md:h-[12rem] md:w-0 md:border-[1px]"></div>
 
       <form className="flex flex-col items-center" onSubmit={accessList}>
         <p className="text-sm md:text-base">📜 Welcome back!</p>

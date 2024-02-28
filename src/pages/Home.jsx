@@ -6,8 +6,8 @@ function Home() {
   const { userToken, name } = useShoppingList();
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
-      <div className="relative flex h-[15rem] w-[15rem] items-center justify-center rounded-full bg-purple-500 p-[4rem] shadow-lg">
+    <div className="flex flex-col items-center justify-center gap-10 md:gap-6">
+      <div className="relative flex h-[12rem] w-[12rem] items-center justify-center rounded-full bg-purple-500 p-[4rem] shadow-lg md:h-[15rem] md:w-[15rem]">
         <img
           src="./woman-shopping.svg"
           alt="Woman Shopping"
