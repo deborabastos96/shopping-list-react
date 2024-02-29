@@ -24,8 +24,13 @@ function ShoppingListProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userToken = localStorage.getItem('token');
-    if (userToken == null || userToken == '""') return navigate('/');
+    const userToken = localStorage
+      .getItem('token')
+      .split('')
+      .slice(1, -1)
+      .join('');
+
+    if (userToken == null || userToken == '') return navigate('/');
 
     setToken(userToken);
     getShoppingList(userToken);
@@ -55,14 +60,14 @@ function ShoppingListProvider({ children }) {
   }
 
   async function getShoppingList(userToken) {
-    if (!userToken) return navigate('/');
-
     setIsLoading(true);
 
     const shoppingListSnapshot = await getDocs(shoppingListCollection);
     const shoppingListFull = shoppingListSnapshot.docs.find(
       (doc) => doc.data().token === userToken,
     );
+
+    console.log(shoppingListFull.data().token);
 
     if (!shoppingListFull) {
       setToken('');
