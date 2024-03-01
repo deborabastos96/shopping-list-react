@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { db, shoppingListCollection } from '../services/firebase';
 import { getDocs, addDoc, doc, updateDoc } from '@firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +29,42 @@ function ShoppingListProvider({ children }) {
 
   const navigate = useNavigate();
 
+  const getShoppingList = useCallback(
+    async function getShoppingListFn(userToken) {
+      setIsLoading(true);
+
+      const shoppingListSnapshot = await getDocs(shoppingListCollection);
+      const shoppingListFull = shoppingListSnapshot.docs.find(
+        (doc) => doc.data().token === userToken,
+      );
+
+      if (shoppingListFull == undefined) {
+        setToken('');
+        setIsLoading(false);
+        navigate(-1);
+        toast.error(
+          'Unable to locate a list containing that token. Please try again with a different one!',
+        );
+        throw new Error(
+          'List containing that token does not exist in database.',
+        );
+      }
+
+      const { bought, categories, items, name, quantities } =
+        shoppingListFull.data();
+      setId(shoppingListFull.id);
+      setBought(bought);
+      setCategories(categories);
+      setItems(items);
+      setName(name);
+      setQuantities(quantities);
+
+      navigate('/list');
+      setIsLoading(false);
+    },
+    [navigate, setToken],
+  );
+
   useEffect(() => {
     const userToken = localStorage
       .getItem('token')
@@ -34,7 +76,7 @@ function ShoppingListProvider({ children }) {
 
     setToken(userToken);
     getShoppingList(userToken);
-  }, []);
+  }, [navigate, setToken, getShoppingList]);
 
   async function accessList(e) {
     e.preventDefault();
@@ -56,40 +98,7 @@ function ShoppingListProvider({ children }) {
       token: newToken,
     });
 
-    location.reload();
-  }
-
-  async function getShoppingList(userToken) {
-    setIsLoading(true);
-
-    const shoppingListSnapshot = await getDocs(shoppingListCollection);
-    const shoppingListFull = shoppingListSnapshot.docs.find(
-      (doc) => doc.data().token === userToken,
-    );
-
-    console.log(shoppingListFull.data().token);
-
-    if (!shoppingListFull) {
-      setToken('');
-      setIsLoading(false);
-      navigate(-1);
-      toast.error(
-        'Unable to locate a list containing that token. Please try again with a different one!',
-      );
-      throw new Error('List containing that token does not exist in database.');
-    }
-
-    const { bought, categories, items, name, quantities } =
-      shoppingListFull.data();
-    setId(shoppingListFull.id);
-    setBought(bought);
-    setCategories(categories);
-    setItems(items);
-    setName(name);
-    setQuantities(quantities);
-
     navigate('/list');
-    setIsLoading(false);
   }
 
   async function updateShoppingList(obj) {
@@ -114,6 +123,7 @@ function ShoppingListProvider({ children }) {
         setName,
         setQuantities,
         updateShoppingList,
+        setIsLoading,
         isLoading,
         getShoppingList,
         tokenInput,
