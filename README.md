@@ -19,4 +19,4 @@ Welcome to the Shopping List application! This is a simple web application built
 - React Icons
 - LocalStorage
 - Firebase
-- React Hot Toast
+- React Hot Toast.
