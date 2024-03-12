@@ -1,20 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useShoppingList } from '../context/ShoppingListContexts';
 import Category from './Category';
-import Button from './Button';
-import toast from 'react-hot-toast';
-import Modal from './Modal';
-import ConfirmDelete from './ConfirmDelete';
 
 function ItemsList() {
-  const {
-    categories,
-    items,
-    updateShoppingList,
-    setIsLoading,
-    bought,
-    setOpenName,
-  } = useShoppingList();
+  const { categories } = useShoppingList();
 
   let categoriesSet = [];
 

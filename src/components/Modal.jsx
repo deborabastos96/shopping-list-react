@@ -1,5 +1,5 @@
-import { cloneElement, createContext, useContext, useState } from 'react';
-import { HiOutlineXMark, HiXMark } from 'react-icons/hi2';
+import { cloneElement, createContext, useContext } from 'react';
+import { HiOutlineXMark } from 'react-icons/hi2';
 import { useOutsideClick } from '../hooks/useOutsideClick';
 import { createPortal } from 'react-dom';
 import Button from './Button';

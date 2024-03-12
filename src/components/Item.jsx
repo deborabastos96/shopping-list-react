@@ -85,13 +85,13 @@ function Item({ index: i }) {
       </span>
 
       <Modal>
-        <Modal.Open opens="delete">
+        <Modal.Open opens={`delete-${i}`}>
           <Button type="delete">
             <HiOutlineXMark />
           </Button>
         </Modal.Open>
 
-        <Modal.Window name="delete">
+        <Modal.Window name={`delete-${i}`}>
           <ConfirmDelete
             resourceName="this item"
             onConfirm={() => handleDelete()}
